@@ -25,7 +25,7 @@ const SkiWeatherApp = () => {
             lat: LAT, // Latitude for Belleayre Mountain
             lon: LON, // Longitude for Belleayre Mountain
             appid: API_KEY, // API key for authentication
-            units: 'metric', // Use metric system for temperature (Celsius)
+            units: 'imperial', // Use imperial system for temperature (Fahrenheit)
           },
         });
 
@@ -36,7 +36,7 @@ const SkiWeatherApp = () => {
         setWeather(data); // Update the weather state with the fetched data
 
         // Check if the weather conditions are suitable for skiing
-        if (data.weather.some(condition => condition.main === 'Snow') && data.main.temp <= 0) {
+        if (data.weather.some(condition => condition.main === 'Snow') && data.main.temp <= 32) {
           console.log('Conditions are ideal for skiing.'); // Debug: Log that skiing conditions are good
           setDecision("It's snowy and cold! Perfect for skiing! ⛷️💃"); // Update the decision state with a positive message
         } else {
@@ -54,13 +54,20 @@ const SkiWeatherApp = () => {
   }, []); // Empty dependency array means this effect runs only once
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Courier New, monospace' }}>
-      <h1>Belleayre Ski Weather Checker</h1>
+    <div style={{ padding: '20px', fontFamily: 'Forum, sans-serif', backgroundColor: '#ffffff' }}>
+      <h1 style={{ textAlign: 'center' }}>Belleayre Ski Weather Checker</h1>
       {weather ? (
         <div>
           <h2>Current Weather in Belleayre:</h2>
-          <p><strong>Temperature:</strong> {weather.main.temp}°C</p>
+          <p><strong>Temperature:</strong> {weather.main.temp}°F</p>
           <p><strong>Condition:</strong> {weather.weather[0].description}</p>
+          {weather.weather[0].icon && (
+            <img 
+              src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} 
+              alt={weather.weather[0].description} 
+              style={{ width: '100px', height: '100px' }}
+            />
+          )}
           <h3>{decision}</h3>
         </div>
       ) : (
