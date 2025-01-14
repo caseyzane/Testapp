@@ -1,106 +1,64 @@
-// Import necessary libraries
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Card, CardContent, Typography, Grid } from '@mui/material';
+import React from 'react';
+import { Grid } from '@mui/material';
+import SkiDashboardCard from './SkiDashboardCard';
+import useSkiWeather from './useSkiWeather';
 
-// SkiDashboardCard component to display ski information in a card format
-const SkiDashboardCard = ({ resortName, weather, decision }) => {
-  return (
-    <Card sx={{ maxWidth: 345, margin: 'auto', boxShadow: 3 }}>
-      <CardContent>
-        <Typography variant="h5" component="div">
-          {resortName}
-        </Typography>
-        {weather ? (
-          <>
-            <Typography variant="body2" color="text.secondary">
-              <strong>Temperature:</strong> {weather.main.temp}°F
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              <strong>Condition:</strong> {weather.weather[0].description}
-            </Typography>
-            {weather.weather[0].icon && (
-              <img
-                src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-                alt={weather.weather[0].description}
-                style={{ width: '100px', height: '100px' }}
-              />
-            )}
-            <Typography variant="body2" color="primary">
-              {decision}
-            </Typography>
-          </>
-        ) : (
-          <Typography variant="body2" color="text.secondary">
-            Loading weather data...
-          </Typography>
-        )}
-      </CardContent>
-    </Card>
-  );
-};
-
-// Main App component
 const App = () => {
-  const [belleayreWeather, setBelleayreWeather] = useState(null);
-  const [goreWeather, setGoreWeather] = useState(null);
-  const [belleayreDecision, setBelleayreDecision] = useState('');
-  const [goreDecision, setGoreDecision] = useState('');
-
-  // OpenWeatherMap API details
-  const API_KEY = '9211eef1c79b24c336f1407ca714703e'; // Replace with your API key
-
   const locations = {
-    Belleayre: { lat: 42.1351, lon: -74.5132 },
-    Gore: { lat: 43.6799, lon: -73.9910 },
+    Belleayre: { lat: 42.1364, lon: -74.5083 },
+    Gore: { lat: 43.6793, lon: -73.9916 },
+    Windham: { lat: 42.3079, lon: -74.2560 },
+    Stowe: { lat: 44.4654, lon: -72.6874 },
+    SmugglersNotch: { lat: 44.5887, lon: -72.7867 },
+    JiminyPeak: { lat: 42.5559, lon: -73.2929 },
   };
 
-  useEffect(() => {
-    const fetchWeather = async (resort, lat, lon, setWeather, setDecision) => {
-      try {
-        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
-          params: {
-            lat,
-            lon,
-            appid: API_KEY,
-            units: 'imperial',
-          },
-        });
+  // Existing Resorts
+  const {
+    weather: belleayreWeather,
+    decision: belleayreDecision,
+  } = useSkiWeather('Belleayre Mountain', locations.Belleayre.lat, locations.Belleayre.lon);
 
-        const data = response.data;
-        setWeather(data);
+  const {
+    weather: goreWeather,
+    decision: goreDecision,
+  } = useSkiWeather('Gore Mountain', locations.Gore.lat, locations.Gore.lon);
 
-        if (data.weather.some((condition) => condition.main === 'Snow') && data.main.temp <= 32) {
-          setDecision(`It's snowy and cold at ${resort}! Perfect for skiing! ⛷️`);
-        } else {
-          setDecision(`Conditions are not ideal for skiing at ${resort}.`);
-        }
-      } catch (error) {
-        console.error(`Error fetching weather data for ${resort}:`, error.message);
-        setDecision(`Could not fetch weather data for ${resort}.`);
-      }
-    };
+  // New Resorts
+  const {
+    weather: windhamWeather,
+    decision: windhamDecision,
+  } = useSkiWeather('Windham Mountain', locations.Windham.lat, locations.Windham.lon);
 
-    fetchWeather(
-      'Belleayre',
-      locations.Belleayre.lat,
-      locations.Belleayre.lon,
-      setBelleayreWeather,
-      setBelleayreDecision
-    );
-    fetchWeather(
-      'Gore',
-      locations.Gore.lat,
-      locations.Gore.lon,
-      setGoreWeather,
-      setGoreDecision
-    );
-  }, []);
+  const {
+    weather: stoweWeather,
+    decision: stoweDecision,
+  } = useSkiWeather('Stowe Mountain', locations.Stowe.lat, locations.Stowe.lon);
+
+  const {
+    weather: smugglersNotchWeather,
+    decision: smugglersNotchDecision,
+  } = useSkiWeather('Smugglers’ Notch', locations.SmugglersNotch.lat, locations.SmugglersNotch.lon);
+
+  const {
+    weather: jiminyPeakWeather,
+    decision: jiminyPeakDecision,
+  } = useSkiWeather('Jiminy Peak', locations.JiminyPeak.lat, locations.JiminyPeak.lon);
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Forum, sans-serif', backgroundColor: '#f5f5f5' }}>
-      <h1 style={{ textAlign: 'center' }}>Ski Weather Comparison</h1>
+    <div
+      style={{
+        padding: '20px',
+        fontFamily: 'Forum, sans-serif',
+        backgroundColor: '#f5f5f5',
+        minHeight: '100vh',
+      }}
+    >
+      {/* Main title */}
+      <h1 style={{ textAlign: 'center' }}>Skiing in the Catskills and Beyond</h1>
+
       <Grid container spacing={3} justifyContent="center">
+        {/* Existing Resorts */}
         <Grid item>
           <SkiDashboardCard
             resortName="Belleayre Mountain"
@@ -113,6 +71,36 @@ const App = () => {
             resortName="Gore Mountain"
             weather={goreWeather}
             decision={goreDecision}
+          />
+        </Grid>
+
+        {/* New Resorts */}
+        <Grid item>
+          <SkiDashboardCard
+            resortName="Windham Mountain"
+            weather={windhamWeather}
+            decision={windhamDecision}
+          />
+        </Grid>
+        <Grid item>
+          <SkiDashboardCard
+            resortName="Stowe Mountain"
+            weather={stoweWeather}
+            decision={stoweDecision}
+          />
+        </Grid>
+        <Grid item>
+          <SkiDashboardCard
+            resortName="Smugglers’ Notch"
+            weather={smugglersNotchWeather}
+            decision={smugglersNotchDecision}
+          />
+        </Grid>
+        <Grid item>
+          <SkiDashboardCard
+            resortName="Jiminy Peak"
+            weather={jiminyPeakWeather}
+            decision={jiminyPeakDecision}
           />
         </Grid>
       </Grid>
