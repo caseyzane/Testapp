@@ -1,51 +1,68 @@
+// useSkiWeather.js
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_KEY = '9211eef1c79b24c336f1407ca714703e'; // Replace with your actual API key
-
-function useSkiWeather(resortName, lat, lon) {
-  // Local states for weather data and skiing decision
-  const [weather, setWeather] = useState(null);
-  const [decision, setDecision] = useState('Loading weather data...');
+const useSkiWeather = (resortName, lat, lon) => {
+  const [forecast, setForecast] = useState(null);
+  const [bestDays, setBestDays] = useState([]);
 
   useEffect(() => {
-    const fetchWeather = async () => {
+    const fetchForecast = async () => {
       try {
-        console.log(`Fetching weather for ${resortName}...`); // Debug log
+        console.log(`Fetching forecast for ${resortName}...`);
 
-        const response = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
+        // Open-Meteo API endpoint
+        const response = await axios.get('https://api.open-meteo.com/v1/forecast', {
           params: {
-            lat,
-            lon,
-            appid: API_KEY,
-            units: 'imperial',
+            latitude: lat,
+            longitude: lon,
+            daily: 'temperature_2m_max,temperature_2m_min,snowfall_sum,precipitation_sum',
+            timezone: 'America/New_York',
           },
         });
 
-        const data = response.data;
-        console.log(`Weather data for ${resortName}:`, data); // Debug log
-        setWeather(data);
+        console.log(`Raw API response for ${resortName}:`, response.data);
 
-        // Decision logic for ski conditions
-        const isSnowing = data.weather.some((condition) => condition.main === 'Snow');
-        const isBelowFreezing = data.main.temp <= 32;
-
-        if (isSnowing && isBelowFreezing) {
-          setDecision(`It's snowy and cold at ${resortName}! Perfect for skiing! ⛷️`);
-        } else {
-          setDecision(`Conditions are not ideal for skiing at ${resortName}.`);
+        const daily = response.data.daily;
+        if (!daily || !daily.time) {
+          console.error(`Incomplete data received for ${resortName}:`, daily);
+          setForecast(null);
+          setBestDays([]);
+          return;
         }
+
+        // Transform the data into a usable format
+        const transformedForecast = daily.time.map((date, index) => ({
+          date,
+          tempMax: daily.temperature_2m_max[index],
+          tempMin: daily.temperature_2m_min[index],
+          snowfall: daily.snowfall_sum[index],
+          precipitation: daily.precipitation_sum[index],
+        }));
+
+        console.log(`Transformed Forecast for ${resortName}:`, transformedForecast);
+
+        setForecast(transformedForecast);
+
+        // Determine best ski days: snowfall > 0 and tempMax <= 32°F
+        const best = transformedForecast
+          .filter((day) => day.snowfall > 0 && day.tempMax <= 32)
+          .map((day) => day.date);
+
+        console.log(`Best Ski Days for ${resortName}:`, best);
+
+        setBestDays(best);
       } catch (error) {
-        console.error(`Error fetching weather data for ${resortName}:`, error.message);
-        setDecision(`Could not fetch weather data for ${resortName}.`);
+        console.error(`Error fetching forecast for ${resortName}:`, error.message);
+        setForecast(null);
+        setBestDays([]);
       }
     };
 
-    fetchWeather();
-  }, [resortName, lat, lon]); // Dependencies ensure this runs when these values change
+    fetchForecast();
+  }, [resortName, lat, lon]);
 
-  // Return the weather data and the decision
-  return { weather, decision };
-}
+  return { forecast, bestDays };
+};
 
 export default useSkiWeather;
