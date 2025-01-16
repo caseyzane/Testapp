@@ -1,5 +1,5 @@
 // App.js
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Grid } from '@mui/material';
 import SkiDashboardCard from './SkiDashboardCard';
 import useSkiWeather from './useSkiWeather';
@@ -14,9 +14,6 @@ const App = () => {
     SmugglersNotch: { lat: 44.5887, lon: -72.7867 },
     JiminyPeak: { lat: 42.5559, lon: -73.2929 },
   };
-
-  // Track which card should blink
-  const [blinkingCard, setBlinkingCard] = useState('');
 
   // Fetch data for each resort
   const {
@@ -49,30 +46,6 @@ const App = () => {
     bestDays: jiminyPeakBestDays,
   } = useSkiWeather('Jiminy Peak', locations.JiminyPeak.lat, locations.JiminyPeak.lon);
 
-  // Determine which card should blink on mount
-  useEffect(() => {
-    if (belleayreBestDays.length > 0) {
-      setBlinkingCard('Belleayre Mountain');
-    } else if (goreBestDays.length > 0) {
-      setBlinkingCard('Gore Mountain');
-    } else if (windhamBestDays.length > 0) {
-      setBlinkingCard('Windham Mountain');
-    } else if (stoweBestDays.length > 0) {
-      setBlinkingCard('Stowe Mountain');
-    } else if (smugglersNotchBestDays.length > 0) {
-      setBlinkingCard('Smugglers’ Notch');
-    } else if (jiminyPeakBestDays.length > 0) {
-      setBlinkingCard('Jiminy Peak');
-    }
-  }, [
-    belleayreBestDays,
-    goreBestDays,
-    windhamBestDays,
-    stoweBestDays,
-    smugglersNotchBestDays,
-    jiminyPeakBestDays,
-  ]);
-
   return (
     <div
       style={{
@@ -85,42 +58,42 @@ const App = () => {
       <h1 style={{ textAlign: 'center' }}>Skiing in the Catskills and Beyond</h1>
 
       <Grid container spacing={3} justifyContent="center">
-        <Grid item className={blinkingCard === 'Belleayre Mountain' ? 'blink' : ''}>
+        <Grid item>
           <SkiDashboardCard
             resortName="Belleayre Mountain"
             forecast={belleayreForecast}
             bestDays={belleayreBestDays}
           />
         </Grid>
-        <Grid item className={blinkingCard === 'Gore Mountain' ? 'blink' : ''}>
+        <Grid item>
           <SkiDashboardCard
             resortName="Gore Mountain"
             forecast={goreForecast}
             bestDays={goreBestDays}
           />
         </Grid>
-        <Grid item className={blinkingCard === 'Windham Mountain' ? 'blink' : ''}>
+        <Grid item>
           <SkiDashboardCard
             resortName="Windham Mountain"
             forecast={windhamForecast}
             bestDays={windhamBestDays}
           />
         </Grid>
-        <Grid item className={blinkingCard === 'Stowe Mountain' ? 'blink' : ''}>
+        <Grid item>
           <SkiDashboardCard
             resortName="Stowe Mountain"
             forecast={stoweForecast}
             bestDays={stoweBestDays}
           />
         </Grid>
-        <Grid item className={blinkingCard === 'Smugglers’ Notch' ? 'blink' : ''}>
+        <Grid item>
           <SkiDashboardCard
             resortName="Smugglers’ Notch"
             forecast={smugglersNotchForecast}
             bestDays={smugglersNotchBestDays}
           />
         </Grid>
-        <Grid item className={blinkingCard === 'Jiminy Peak' ? 'blink' : ''}>
+        <Grid item>
           <SkiDashboardCard
             resortName="Jiminy Peak"
             forecast={jiminyPeakForecast}

@@ -60,7 +60,7 @@ const useSkiWeather = (resortName, lat, lon) => {
     };
 
     fetchForecast();
-  }, [resortName, lat, lon]);
+  }, [resortName, lat, lon]); // Ensure dependency array does not include apiKey
 
   return { forecast, bestDays };
 };
