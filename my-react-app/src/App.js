@@ -28,7 +28,7 @@ function App() {
     JiminyPeak: { lat: 42.3925, lon: -72.8833 },
   };
 
-  // Fetch weather data for each resort
+  // Fetch weather data for each resort using the useWeather hook
   const {
     forecast: belleayreForecast,
     bestDays: belleayreBestDays,
@@ -71,9 +71,9 @@ function App() {
     error: jiminyPeakError,
   } = useWeather('Jiminy Peak', locations.JiminyPeak.lat, locations.JiminyPeak.lon);
 
-  // Toggle handler
+  // Toggle handler for the button
   const handleToggle = () => {
-    console.log('Toggle button clicked'); // Added for debugging
+    console.log('Toggle button clicked'); // Debugging log
     setShowBestConditions((prev) => !prev);
   };
 
@@ -81,7 +81,12 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1 className="App-title">Ski Weather Dashboard</h1>
-        <button onClick={handleToggle} className="App-toggle-button">
+        <button
+          onClick={handleToggle}
+          className={`App-toggle-button ${showBestConditions ? 'active' : ''}`}
+          aria-pressed={showBestConditions}
+          aria-label="Toggle best conditions view"
+        >
           {showBestConditions ? 'Show All Days' : 'Show Best Conditions'}
         </button>
       </header>
@@ -96,7 +101,6 @@ function App() {
             loading={belleayreLoading}
             error={belleayreError}
           />
-          {/* Repeat SkiDashboardCard for other resorts */}
           <SkiDashboardCard
             resortName="Gore Mountain"
             forecast={goreForecast}

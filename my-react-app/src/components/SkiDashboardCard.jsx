@@ -32,25 +32,40 @@ const SkiDashboardCard = ({
     );
   }
 
-  const daysToShow = showBestConditions ? bestDays : forecast;
+  // Determine which days to show based on toggle state
+  const daysToShow = showBestConditions
+    ? forecast.filter((day) => bestDays.includes(day.date))
+    : forecast;
+
+  console.log(`Rendering forecast for ${resortName}:`, daysToShow);
 
   return (
     <div className="ski-card">
       <div className="ski-card-content">
         <div className="ski-card-logo-container">
-          <img src={logo} alt={`${resortName} Logo`} className="ski-card-logo" />
+          <img src={logo} alt={`${resortName} Logo`} className="ski-card-logo" loading="lazy" />
         </div>
         <h2 className="ski-card-title">{resortName}</h2>
         {showBestConditions && (
-          <p className="ski-card-best-days">Best Days: {bestDays.join(', ')}</p>
+          <div className="ski-card-best-days">
+            <h3>Best Days:</h3>
+            <ul>
+              {daysToShow.map((day, index) => (
+                <li key={index}>
+                  {day.date} - {day.condition}, {day.temperature}°F
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
         <h3 className="ski-card-forecast-title">Forecast</h3>
         <ul className="ski-card-forecast-list">
           {daysToShow.map((day, index) => (
             <li key={index} className="ski-card-forecast-item">
-              {/* Example forecast item: Date and condition */}
               <span>{day.date}</span>
-              <span className="ski-card-forecast-text">{day.condition}</span>
+              <span className="ski-card-forecast-text">
+                {day.condition ? day.condition : 'No Data'}, {day.temperature}°F
+              </span>
             </li>
           ))}
         </ul>
@@ -59,4 +74,4 @@ const SkiDashboardCard = ({
   );
 };
 
-export default SkiDashboardCard;
+export default React.memo(SkiDashboardCard);
