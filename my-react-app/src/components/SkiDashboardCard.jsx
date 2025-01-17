@@ -32,6 +32,13 @@ const SkiDashboardCard = ({
     );
   }
 
+  // Function to format date to "Mon Jan 16"
+  const formatDate = (dateString) => {
+    const options = { weekday: 'short', month: 'short', day: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', options);
+  };
+
   // Determine which days to show based on toggle state
   const daysToShow = showBestConditions
     ? forecast.filter((day) => bestDays.includes(day.date))
@@ -52,7 +59,7 @@ const SkiDashboardCard = ({
             <ul>
               {daysToShow.map((day, index) => (
                 <li key={index}>
-                  {day.date} - {day.condition}, {day.temperature}°F
+                  {formatDate(day.date)} - {day.condition}, {day.temperature}°F
                 </li>
               ))}
             </ul>
@@ -62,7 +69,7 @@ const SkiDashboardCard = ({
         <ul className="ski-card-forecast-list">
           {daysToShow.map((day, index) => (
             <li key={index} className="ski-card-forecast-item">
-              <span>{day.date}</span>
+              <span>{formatDate(day.date)}</span>
               <span className="ski-card-forecast-text">
                 {day.condition ? day.condition : 'No Data'}, {day.temperature}°F
               </span>
