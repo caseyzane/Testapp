@@ -1,108 +1,151 @@
-// App.js
-import React from 'react';
-import { Grid } from '@mui/material';
-import SkiDashboardCard from './SkiDashboardCard';
-import useSkiWeather from './useSkiWeather';
-import './App.css'; // Ensure this imports the CSS file
+// src/App.js
 
-const App = () => {
+import React, { useState } from 'react';
+import SkiDashboardCard from './components/SkiDashboardCard';
+import './App.css';
+
+// Import logos
+import belleayreLogo from './assets/logos/belleayre.png';
+import goreLogo from './assets/logos/gore.png';
+import windhamLogo from './assets/logos/windham.png';
+import stoweLogo from './assets/logos/stowe.png';
+import smugglersLogo from './assets/logos/smugglersnotch.png';
+import jiminyPeakLogo from './assets/logos/jiminypeak.png';
+
+// Import useWeather hook
+import useWeather from './hooks/useWeather';
+
+function App() {
+  const [showBestConditions, setShowBestConditions] = useState(false);
+
+  // Define resort locations with latitude and longitude
   const locations = {
-    Belleayre: { lat: 42.1364, lon: -74.5083 },
-    Gore: { lat: 43.6793, lon: -73.9916 },
-    Windham: { lat: 42.3079, lon: -74.2560 },
-    Stowe: { lat: 44.4654, lon: -72.6874 },
-    SmugglersNotch: { lat: 44.5887, lon: -72.7867 },
-    JiminyPeak: { lat: 42.5559, lon: -73.2929 },
+    Belleayre: { lat: 42.0436, lon: -74.2062 },
+    Gore: { lat: 42.3333, lon: -73.9022 },
+    Windham: { lat: 41.3232, lon: -73.1250 },
+    Stowe: { lat: 44.4919, lon: -72.7797 },
+    Smugglers: { lat: 43.5753, lon: -72.6668 },
+    JiminyPeak: { lat: 42.3925, lon: -72.8833 },
   };
 
-  // Fetch data for each resort
+  // Fetch weather data for each resort
   const {
     forecast: belleayreForecast,
     bestDays: belleayreBestDays,
-  } = useSkiWeather('Belleayre Mountain', locations.Belleayre.lat, locations.Belleayre.lon);
+    loading: belleayreLoading,
+    error: belleayreError,
+  } = useWeather('Belleayre Mountain', locations.Belleayre.lat, locations.Belleayre.lon);
 
   const {
     forecast: goreForecast,
     bestDays: goreBestDays,
-  } = useSkiWeather('Gore Mountain', locations.Gore.lat, locations.Gore.lon);
+    loading: goreLoading,
+    error: goreError,
+  } = useWeather('Gore Mountain', locations.Gore.lat, locations.Gore.lon);
 
   const {
     forecast: windhamForecast,
     bestDays: windhamBestDays,
-  } = useSkiWeather('Windham Mountain', locations.Windham.lat, locations.Windham.lon);
+    loading: windhamLoading,
+    error: windhamError,
+  } = useWeather('Windham Mountain', locations.Windham.lat, locations.Windham.lon);
 
   const {
     forecast: stoweForecast,
     bestDays: stoweBestDays,
-  } = useSkiWeather('Stowe Mountain', locations.Stowe.lat, locations.Stowe.lon);
+    loading: stoweLoading,
+    error: stoweError,
+  } = useWeather('Stowe Mountain Resort', locations.Stowe.lat, locations.Stowe.lon);
 
   const {
-    forecast: smugglersNotchForecast,
-    bestDays: smugglersNotchBestDays,
-  } = useSkiWeather('Smugglers’ Notch', locations.SmugglersNotch.lat, locations.SmugglersNotch.lon);
+    forecast: smugglersForecast,
+    bestDays: smugglersBestDays,
+    loading: smugglersLoading,
+    error: smugglersError,
+  } = useWeather('Smugglers Notch', locations.Smugglers.lat, locations.Smugglers.lon);
 
   const {
     forecast: jiminyPeakForecast,
     bestDays: jiminyPeakBestDays,
-  } = useSkiWeather('Jiminy Peak', locations.JiminyPeak.lat, locations.JiminyPeak.lon);
+    loading: jiminyPeakLoading,
+    error: jiminyPeakError,
+  } = useWeather('Jiminy Peak', locations.JiminyPeak.lat, locations.JiminyPeak.lon);
+
+  // Toggle handler
+  const handleToggle = () => {
+    console.log('Toggle button clicked'); // Added for debugging
+    setShowBestConditions((prev) => !prev);
+  };
 
   return (
-    <div
-      style={{
-        padding: '20px',
-        fontFamily: 'Forum, sans-serif',
-        backgroundColor: '#f5f5f5',
-        minHeight: '100vh',
-      }}
-    >
-      <h1 style={{ textAlign: 'center' }}>Skiing in the Catskills and Beyond</h1>
-
-      <Grid container spacing={3} justifyContent="center">
-        <Grid item>
+    <div className="App">
+      <header className="App-header">
+        <h1 className="App-title">Ski Weather Dashboard</h1>
+        <button onClick={handleToggle} className="App-toggle-button">
+          {showBestConditions ? 'Show All Days' : 'Show Best Conditions'}
+        </button>
+      </header>
+      <main className="App-main">
+        <div className="App-cards-container">
           <SkiDashboardCard
             resortName="Belleayre Mountain"
             forecast={belleayreForecast}
             bestDays={belleayreBestDays}
+            showBestConditions={showBestConditions}
+            logo={belleayreLogo}
+            loading={belleayreLoading}
+            error={belleayreError}
           />
-        </Grid>
-        <Grid item>
+          {/* Repeat SkiDashboardCard for other resorts */}
           <SkiDashboardCard
             resortName="Gore Mountain"
             forecast={goreForecast}
             bestDays={goreBestDays}
+            showBestConditions={showBestConditions}
+            logo={goreLogo}
+            loading={goreLoading}
+            error={goreError}
           />
-        </Grid>
-        <Grid item>
           <SkiDashboardCard
             resortName="Windham Mountain"
             forecast={windhamForecast}
             bestDays={windhamBestDays}
+            showBestConditions={showBestConditions}
+            logo={windhamLogo}
+            loading={windhamLoading}
+            error={windhamError}
           />
-        </Grid>
-        <Grid item>
           <SkiDashboardCard
-            resortName="Stowe Mountain"
+            resortName="Stowe Mountain Resort"
             forecast={stoweForecast}
             bestDays={stoweBestDays}
+            showBestConditions={showBestConditions}
+            logo={stoweLogo}
+            loading={stoweLoading}
+            error={stoweError}
           />
-        </Grid>
-        <Grid item>
           <SkiDashboardCard
-            resortName="Smugglers’ Notch"
-            forecast={smugglersNotchForecast}
-            bestDays={smugglersNotchBestDays}
+            resortName="Smugglers Notch"
+            forecast={smugglersForecast}
+            bestDays={smugglersBestDays}
+            showBestConditions={showBestConditions}
+            logo={smugglersLogo}
+            loading={smugglersLoading}
+            error={smugglersError}
           />
-        </Grid>
-        <Grid item>
           <SkiDashboardCard
             resortName="Jiminy Peak"
             forecast={jiminyPeakForecast}
             bestDays={jiminyPeakBestDays}
+            showBestConditions={showBestConditions}
+            logo={jiminyPeakLogo}
+            loading={jiminyPeakLoading}
+            error={jiminyPeakError}
           />
-        </Grid>
-      </Grid>
+        </div>
+      </main>
     </div>
   );
-};
+}
 
 export default App;

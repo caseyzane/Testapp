@@ -1,3 +1,178 @@
-/* App.css */
+/* src/App.css */
 
-/* Blinking effect removed */
+/* Import Neon Blitz Font */
+@font-face {
+  font-family: 'Neon Blitz';
+  src: url('./assets/fonts/Neonblitz.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Import Google Fonts (Optional: Keep if you want Roboto or another fallback font) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Global Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif; /* Fallback to Roboto */
+  background-color: #f0f4f8; /* Light background for contrast */
+}
+
+/* App Container */
+.App {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  /* Background Image with Brightness Overlay */
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
+    url('./assets/images/winter-pc-003.png');
+  background-size: contain; /* Prevents stretching */
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed; /* Keeps background fixed during scroll */
+  position: relative;
+}
+
+/* Header Styles */
+.App-header {
+  background-color: transparent; /* Remove dark background */
+  padding: 20px;
+  color: white;
+  position: relative;
+  z-index: 1; /* Ensure header stays above the background */
+}
+
+/* Flicker Animation */
+@keyframes flicker {
+  0% {
+    opacity: 1;
+    text-shadow: 2px 2px 5px rgba(255, 192, 203, 0.5);
+  }
+  10% {
+    opacity: 0.9;
+    text-shadow: 1px 1px 3px rgba(255, 192, 203, 0.4);
+  }
+  20% {
+    opacity: 1;
+    text-shadow: 2px 2px 5px rgba(255, 192, 203, 0.5);
+  }
+  30% {
+    opacity: 0.85;
+    text-shadow: 1.5px 1.5px 4px rgba(255, 192, 203, 0.45);
+  }
+  40% {
+    opacity: 1;
+    text-shadow: 2px 2px 5px rgba(255, 192, 203, 0.5);
+  }
+  50% {
+    opacity: 0.95;
+    text-shadow: 1.8px 1.8px 4.5px rgba(255, 192, 203, 0.48);
+  }
+  60% {
+    opacity: 1;
+    text-shadow: 2px 2px 5px rgba(255, 192, 203, 0.5);
+  }
+  70% {
+    opacity: 0.9;
+    text-shadow: 1.6px 1.6px 4px rgba(255, 192, 203, 0.46);
+  }
+  80% {
+    opacity: 1;
+    text-shadow: 2px 2px 5px rgba(255, 192, 203, 0.5);
+  }
+  90% {
+    opacity: 0.88;
+    text-shadow: 1.4px 1.4px 3.5px rgba(255, 192, 203, 0.44);
+  }
+  100% {
+    opacity: 1;
+    text-shadow: 2px 2px 5px rgba(255, 192, 203, 0.5);
+  }
+}
+
+/* Application Title */
+.App-title {
+  font-size: 2.5rem;
+  margin: 0;
+  font-family: 'Neon Blitz', cursive; /* Apply Neon Blitz to the title */
+  color: #00f; /* Electric Blue */
+  text-shadow: 2px 2px 5px rgba(255, 192, 203, 0.5); /* Initial soft pink shadow */
+  animation: flicker 3s infinite; /* Apply enhanced flicker animation */
+}
+
+/* Toggle Button Styles */
+.App-toggle-button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #282c34;
+  background-color: #61dafb;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.App-toggle-button:hover {
+  background-color: #21a1f1;
+}
+
+/* Main Content Styles */
+.App-main {
+  flex: 1;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  padding: 20px;
+  position: relative;
+  z-index: 1; /* Ensure main content stays above the background */
+}
+
+/* Cards Container */
+.App-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center; /* Center the cards horizontally */
+  align-items: flex-start; /* Align items to the top */
+  width: 100%;
+  max-width: 1200px; /* Optional: Limit the maximum width */
+  margin: 0 auto; /* Center the container */
+}
+
+/* Responsive Background Image */
+@media (max-width: 1200px) {
+  .App {
+    background-size: contain; /* Prevents stretching on medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .App {
+    background-size: cover; /* Ensures full coverage on smaller screens */
+  }
+
+  .App-cards-container {
+    gap: 15px; /* Reduce gap between cards on medium screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .App {
+    background-size: auto 100%; /* Adjust size for very small screens */
+  }
+
+  .App-cards-container {
+    flex-direction: column; /* Stack cards vertically on small screens */
+    align-items: center;
+  }
+
+  .ski-card {
+    max-width: 90%; /* Ensure cards don't exceed 90% of viewport width on mobile */
+  }
+}

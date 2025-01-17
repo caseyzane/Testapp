@@ -1,0 +1,145 @@
+/* src/components/SkiDashboardCard.css */
+
+/* Ski Resort Card Container */
+.ski-card {
+  width: 100%;
+  max-width: 300px; /* Ensures cards don't get too wide */
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white for blending */
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.ski-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Content Positioning */
+.ski-card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Logo Container */
+.ski-card-logo-container {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+.ski-card-logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Resort Name Styling */
+.ski-card-title {
+  font-size: 1.5rem;
+  color: #00f; /* Electric Blue */
+  margin-bottom: 10px;
+  font-family: 'Neon Blitz', cursive; /* Apply Neon Blitz */
+  text-shadow: 2px 2px 5px pink; /* Pink shadow */
+  animation: flicker 3s infinite; /* Apply same flicker animation */
+}
+
+/* Flicker Animation */
+@keyframes flicker {
+  0% { opacity: 1; text-shadow: 2px 2px 5px pink; }
+  10% { opacity: 0.9; text-shadow: 1px 1px 3px rgba(255, 192, 203, 0.4); }
+  20% { opacity: 1; text-shadow: 2px 2px 5px pink; }
+  30% { opacity: 0.85; text-shadow: 1.5px 1.5px 4px rgba(255, 192, 203, 0.45); }
+  40% { opacity: 1; text-shadow: 2px 2px 5px pink; }
+  50% { opacity: 0.95; text-shadow: 1.8px 1.8px 4.5px rgba(255, 192, 203, 0.48); }
+  60% { opacity: 1; text-shadow: 2px 2px 5px pink; }
+  70% { opacity: 0.9; text-shadow: 1.6px 1.6px 4px rgba(255, 192, 203, 0.46); }
+  80% { opacity: 1; text-shadow: 2px 2px 5px pink; }
+  90% { opacity: 0.88; text-shadow: 1.4px 1.4px 3.5px rgba(255, 192, 203, 0.44); }
+  100% { opacity: 1; text-shadow: 2px 2px 5px pink; }
+}
+
+/* Best Days Summary */
+.ski-card-best-days {
+  font-size: 1rem;
+  color: #374151; /* Gray color */
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Forecast Title */
+.ski-card-forecast-title {
+  font-size: 1.2rem;
+  color: #1e3a8a; /* Deep blue color */
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Forecast List */
+.ski-card-forecast-list {
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.ski-card-forecast-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb; /* Light gray border */
+}
+
+.ski-card-forecast-item:last-child {
+  border-bottom: none;
+}
+
+/* Forecast Text */
+.ski-card-forecast-text {
+  margin-left: 10px;
+  font-size: 0.95rem;
+  color: #374151; /* Gray color */
+}
+
+/* Scrollbar Styling for Forecast List */
+.ski-card-forecast-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ski-card-forecast-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .ski-card {
+    width: 100%;
+  }
+
+  .ski-card-content {
+    padding: 15px;
+  }
+
+  .ski-card-logo-container {
+    width: 60px;
+    height: 60px;
+  }
+
+  .ski-card-title {
+    font-size: 1.3rem;
+  }
+
+  .ski-card-forecast-title {
+    font-size: 1rem;
+  }
+
+  .ski-card-forecast-text {
+    font-size: 0.9rem;
+  }
+}
