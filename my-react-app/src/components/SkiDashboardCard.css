@@ -44,7 +44,7 @@
   margin-bottom: 10px;
   font-family: var(--font-family-title); /* Apply Neon Blitz */
   text-shadow: 2px 2px 5px pink; /* Pink shadow */
-  animation: flicker 3s infinite; /* Apply same flicker animation */
+  animation: flicker 3s infinite; /* Apply flicker animation */
 }
 
 /* Flicker Animation */
@@ -97,6 +97,7 @@
 
 /* Best Days Summary */
 .ski-card-best-days {
+  width: 100%; /* Ensure it spans full width */
   font-size: 1rem;
   color: #374151; /* Gray color */
   margin-bottom: 15px;
@@ -108,14 +109,37 @@
   color: var(--secondary-color); /* Deep blue color */
 }
 
-.ski-card-best-days ul {
+.best-days-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.ski-card-best-days li {
+.best-day-item {
+  display: flex;
+  align-items: center;
   margin-bottom: 5px;
+  padding: 5px 10px;
+}
+
+.best-day-item .weather-icon {
+  margin-right: 10px;
+}
+
+.best-day-text {
+  color: inherit; /* Inherit color from parent for flexibility */
+}
+
+/* Highlighted Snow Days */
+.highlight-snow {
+  background-color: #1e3a8a; /* Deep Blue */
+  color: #ffffff; /* White Text */
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.highlight-snow .weather-icon {
+  color: #ffffff; /* Ensure icons are visible on blue background */
 }
 
 /* Forecast Title */
@@ -138,7 +162,6 @@
 
 .ski-card-forecast-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 8px 0;
   border-bottom: 1px solid #e5e7eb; /* Light gray border */
@@ -148,24 +171,196 @@
   border-bottom: none;
 }
 
+/* Forecast Date */
+.forecast-date {
+  flex: 1;
+  text-align: left;
+  font-weight: 600;
+  color: #1e3a8a; /* Deep Blue for dates */
+  min-width: 80px; /* Fixed width for alignment */
+}
+
+/* Divider */
+.forecast-divider {
+  width: 1px;
+  height: 20px;
+  background-color: #d1d5db; /* Light gray */
+  margin: 0 10px;
+}
+
+/* Forecast Info */
+.forecast-info {
+  display: flex;
+  align-items: center;
+  flex: 2;
+}
+
 /* Forecast Text */
-.ski-card-forecast-text {
-  margin-left: 10px;
-  font-size: 0.95rem;
-  color: #374151; /* Gray color */
+.forecast-text {
+  margin-left: 5px;
+  color: inherit; /* Inherit color from parent for flexibility */
 }
 
-/* Scrollbar Styling for Forecast List */
-.ski-card-forecast-list::-webkit-scrollbar {
-  width: 6px;
+/* Weather Icons */
+.weather-icon {
+  width: 24px;
+  height: 24px;
 }
 
-.ski-card-forecast-list::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
+/* Animation for Snow */
+@keyframes snow {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100px) rotate(360deg);
+    opacity: 0;
+  }
 }
 
-/* Responsive Design */
+.weather-icon.snow {
+  animation: snow 5s linear infinite;
+}
+
+/* Animation for Rain */
+@keyframes rain {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100px) translateX(20px);
+    opacity: 0;
+  }
+}
+
+.weather-icon.rain {
+  animation: rain 1.5s linear infinite;
+}
+
+/* Animation for Thunderstorm */
+@keyframes thunder {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.weather-icon.thunderstorm {
+  animation: thunder 1s infinite;
+}
+
+/* Animation for Fog */
+@keyframes fog {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+.weather-icon.fog {
+  animation: fog 3s ease-in-out infinite;
+}
+
+/* Animation for Default Clouds */
+@keyframes cloudy {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+.weather-icon.cloudy,
+.weather-icon.partly-cloudy {
+  animation: cloudy 3s ease-in-out infinite;
+}
+
+/* Animation for Sunny */
+@keyframes sunny {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+}
+
+.weather-icon.sunny {
+  animation: sunny 5s linear infinite;
+}
+
+/* Animation for Default */
+.weather-icon.default {
+  animation: cloudy 3s ease-in-out infinite;
+}
+
+/* Highlighted Snow Days Specific Styles */
+.ski-card-forecast-item.highlight-snow,
+.best-day-item.highlight-snow {
+  border: none; /* Remove border for highlighted items */
+  background-color: #1e3a8a; /* Deep Blue */
+  color: #ffffff; /* White Text */
+}
+
+.ski-card-forecast-item.highlight-snow .forecast-text,
+.best-day-item.highlight-snow .best-day-text {
+  color: #ffffff; /* Ensure text is white */
+}
+
+.ski-card-forecast-item.highlight-snow .weather-icon {
+  color: #ffffff; /* Ensure icons are white */
+}
+
+/* Hover Effect for Non-Highlighted Items */
+.ski-card-forecast-item:not(.highlight-snow):hover,
+.best-day-item:not(.highlight-snow):hover {
+  background-color: rgba(30, 58, 138, 0.1); /* Light blue hover */
+}
+
+/* Ensure consistent padding and margin */
+.best-day-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+}
+
+.best-day-text {
+  color: inherit; /* Inherit color from parent for flexibility */
+}
+
+/* Forecast Info */
+.forecast-info {
+  display: flex;
+  align-items: center;
+  flex: 2;
+}
+
+/* Forecast Text */
+.forecast-text {
+  margin-left: 5px;
+  color: inherit; /* Inherit color from parent for flexibility */
+}
+
+/* Consistent Icon Alignment */
+.forecast-info .weather-icon {
+  margin-right: 5px;
+}
+
+/* Responsive Design Adjustments */
 @media (max-width: 600px) {
   .ski-card {
     width: 100%;
@@ -188,7 +383,18 @@
     font-size: 1rem;
   }
 
-  .ski-card-forecast-text {
+  .forecast-date,
+  .forecast-info {
     font-size: 0.9rem;
+  }
+
+  /* Adjust min-width for smaller screens */
+  .forecast-date {
+    min-width: 60px;
+  }
+
+  .weather-icon {
+    width: 20px;
+    height: 20px;
   }
 }
