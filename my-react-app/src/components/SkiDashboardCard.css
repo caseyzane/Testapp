@@ -320,7 +320,13 @@
   color: #ffffff; /* Ensure text is white */
 }
 
-.ski-card-forecast-item.highlight-snow .weather-icon {
+.ski-card-forecast-item.highlight-snow .forecast-date,
+.best-day-item.highlight-snow .forecast-date {
+  color: #ffffff; /* Ensure date text is white */
+}
+
+.ski-card-forecast-item.highlight-snow .weather-icon,
+.best-day-item.highlight-snow .weather-icon {
   color: #ffffff; /* Ensure icons are white */
 }
 
